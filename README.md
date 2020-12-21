@@ -1,6 +1,8 @@
 # pretty_print
 little debug helper for PHP
 
+![](pprint.png)
+
 ## usage
 
 
