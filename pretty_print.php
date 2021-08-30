@@ -1,33 +1,37 @@
-<?php
 
 function pprint_css() {
 	echo <<<EOL
 <style>
-div.pretty_print {font-family: Consolas, monaco, monospace;font-size: 1em;background-color: #b1b1b1;border: 1px solid #949494;border-radius: 5px;width: max-content;margin: 20px;}
-div.pretty_print label {display: inline-block;width: 100%;font-weight: bold;margin: .2em;cursor: pointer;}
-div.pretty_print label span.linenumber {position: relative;top: 3px;right: 10px;float:right;font-weight: normal;font-size: 80%; color:white;}
-div.pretty_print pre {background: lightgray;margin: 0px;padding: 5px;overflow-y: scroll;max-height: 400px;padding-right: 50px;}
-div.pretty_print pre {scrollbar-width: none;}
-div.pretty_print pre::-webkit-scrollbar {display: none;}
-div.pretty_print .visually-hidden {position: absolute;left: -100vw;}
-div.pretty_print pre span {line-height: 1.5em;}
-div.pretty_print pre span.null {color: black;}
-div.pretty_print pre span.boolean {color: brown;}
-div.pretty_print pre span.double {color: darkgreen;}
-div.pretty_print pre span.integer {color: green;}
-div.pretty_print pre span.string {color: darkblue;}
-div.pretty_print pre span.array {color: black;}
-div.pretty_print pre span.object {color: black;}
-div.pretty_print pre span.type {color: grey;}
-div.pretty_print pre span.public {color: darkgreen;}
-div.pretty_print pre span.protected {color: red;}
-div.pretty_print pre span.private {color: darkorange;}
+div.pretty_print{font-family:Consolas,monaco,monospace;font-size:14px;border-radius:5px;width:800px;max-width:50vw;color:#abb2bf;margin:20px}
+div.pretty_print label{position:relative;display:block;width:100%;background-color:#1b1e23;font-weight:700;color:#e3e3e3;border:1px solid #1b1e23;border-radius:5px;padding:.5em;padding-left:1em;cursor:pointer;z-index:5}
+div.pretty_print label span.linenumber{position:relative;top:3px;right:10px;float:right;font-weight:400;font-size:80%;color:#e3e3e3}
+div.pretty_print pre{position:relative;top:-4px;background:#282c34;margin:0;z-index:1;padding:1em;overflow:scroll;max-height:400px;padding-right:50px;tab-size:4}
+div.pretty_print pre::-webkit-scrollbar{display:block;width:5px;height:5px}
+div.pretty_print pre::-webkit-scrollbar-corner,div.pretty_print pre::-webkit-scrollbar-track{background:#282c34}
+div.pretty_print pre::-webkit-scrollbar-thumb{background:#abb2bf}
+div.pretty_print pre::-webkit-scrollbar-thumb:hover{background:#abb2bf}
+div.pretty_print pre{scrollbar-color:#abb2bf #282c34;scrollbar-width:thin}
+div.pretty_print .visually-hidden{position:absolute;left:-100vw}
+div.pretty_print pre span pre{display:inline;white-space:pre}
+div.pretty_print pre span{line-height:1.5em}
+div.pretty_print pre span.key{color:#e06c75}
+div.pretty_print pre span.null{color:#e6c07b}
+div.pretty_print pre span.boolean{color:#be5046}
+div.pretty_print pre span.double{color:#98c379}
+div.pretty_print pre span.integer{color:#98c379}
+div.pretty_print pre span.string{color:#61aeee}
+div.pretty_print pre span.array{color:#abb2bf}
+div.pretty_print pre span.object{color:#abb2bf}
+div.pretty_print pre span.type{color:#818896}
+div.pretty_print pre span.public{color:#98c379}
+div.pretty_print pre span.protected{color:#be5046}
+div.pretty_print pre span.private{color:#d19a66}
 </style>
 EOL;
 }
 
 
-function pprint($arr, $printable = 0, $type = 0, $hide = 0) {
+function pprint($arr, $hide = 0, $type = 0, $printable = 0) {
 	$bt = debug_backtrace();
 	$caller = array_shift($bt);
 	$id = random_int(0, 999);
@@ -71,7 +75,7 @@ function pprint_array($arr, $p, $printable, $type) {
 			break;
 
 		case "string":
-			echo $arround['value_1'].'<span class="string">'.$arr.'</span>'.$arround['value_2'].$arround['sep'].(($type) ? ' <span class="type">string('.strlen($arr).')</span>' : '');
+			echo $arround['value_1'].'<span class="string">'.htmlspecialchars($arr).'</span>'.$arround['value_2'].$arround['sep'].(($type) ? ' <span class="type">string('.strlen($arr).')</span>' : '');
 			break;
 
 		case "array":
@@ -79,7 +83,7 @@ function pprint_array($arr, $p, $printable, $type) {
 
 			foreach ($arr as $k => $v) {
 				if (gettype($k) == "string") {
-					echo $p."\t".$arround['key_1'].$k.$arround['key_2'].' => ';
+					echo $p."\t<span class=key>".$arround['key_1'].$k.$arround['key_2'].'</span> => ';
 				} else {
 					echo $p."\t"."".$k." => ";
 				}
